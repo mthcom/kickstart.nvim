@@ -39,6 +39,13 @@ return {
         end,
         desc = 'Terminate',
       },
+      {
+        '<leader>dt',
+        function()
+          require('dap').repl.open()
+        end,
+        desc = 'DAP terminal',
+      },
     },
   },
   {
