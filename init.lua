@@ -778,7 +778,30 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'neovim/nvim-lspconfig', -- Using an existing common plugin to anchor our config, or just a bare table
+    config = function()
+      -- 1. Automatically enable spell check ONLY for LaTeX files
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'tex', 'latex', 'markdown' }, -- You can add markdown here too if you like
+        callback = function()
+          vim.opt_local.spell = true
+          vim.opt_local.spelllang = 'en_us' -- Change to your preferred language (e.g., "en_gb")
+        end,
+      })
 
+      -- 2. Keyboard shortcut to toggle spell check on/off
+      -- This binds to <leader>ss (Spell Switch). Change to whatever you prefer!
+      vim.keymap.set('n', '<leader>so', function()
+        vim.opt_local.spell = not vim.opt_local.spell:get()
+        if vim.opt_local.spell:get() then
+          print 'Spell check: ENABLED'
+        else
+          print 'Spell check: DISABLED'
+        end
+      end, { desc = '[S]pell check [S]witch (Toggle)' })
+    end,
+  },
   { -- Autocompletion
     'saghen/blink.cmp',
     event = 'VimEnter',
@@ -889,7 +912,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'nightfox'
+      vim.cmd.colorscheme 'dayfox'
     end,
   },
   {
@@ -903,12 +926,12 @@ require('lazy').setup({
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  {
-    'numToStr/Comment.nvim',
-    config = function()
-      require('Comment').setup()
-    end,
-  },
+  -- {
+  --   'numToStr/Comment.nvim',
+  --   config = function()
+  --     require('Comment').setup()
+  --   end,
+  -- },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
